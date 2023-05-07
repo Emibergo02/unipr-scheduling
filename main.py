@@ -45,7 +45,6 @@ def priorita(processi, numProcessi, durataProcessi):
 def round_robin(processi, numProcessi, durataProcessi):
     toberemoved_processi = processi
     previous_burst = []
-    tma = 0
 
     while len(toberemoved_processi) > 0:
         for index, process in enumerate(toberemoved_processi):
@@ -91,12 +90,14 @@ def calculateTma(processi):
 def main(filename):
     file = open(filename, "r")
     firstLine = file.readline().replace('\n', '')
-    firstLine = firstLine.split(' ')[1:]
+    firstLine = firstLine.split(' ')[1:]  # Rimuovo cancelletto prima riga
     numProcessi = int(firstLine[0])
     durataProcessi = int(firstLine[1])
     processi = []
+
     riga = file.readline()
     while riga != "":
+        # Rimuovo \n e spazi doppi
         extracted = riga.replace('\n', '') \
             .replace('  ', ' ') \
             .split(' ')
@@ -104,22 +105,24 @@ def main(filename):
             Process(extracted[0], int(extracted[1]), int(extracted[2]))
         )
         riga = file.readline()
+
     file.close()
+
     print('FCFS: ', end='')
     fcfs(processi, numProcessi, durataProcessi)
+
     print('SJF: ', end='')
     sfj(processi, numProcessi, durataProcessi)
+
     print('Priorità: ', end='')
     priorita(processi, numProcessi, durataProcessi)
+
     print('Round Robin: ', end='')
     round_robin(processi, numProcessi, durataProcessi)
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("Errore: inserire il nome del file")
         exit(1)
     main(sys.argv[1])
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
